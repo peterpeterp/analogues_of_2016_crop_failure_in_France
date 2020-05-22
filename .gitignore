@@ -3,3 +3,4 @@
 *.png
 logs/*
 *.Rdat
+.DS_Store
