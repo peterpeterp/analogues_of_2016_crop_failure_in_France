@@ -1,0 +1,5 @@
+*.nc
+*.pdf
+*.png
+logs/*
+*.Rdat
