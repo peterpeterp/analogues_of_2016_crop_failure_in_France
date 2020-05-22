@@ -10,6 +10,8 @@ Running the analysis requires an installation of R with the following libraries:
 
 The analysis of December temperatures and April-July precipitation can be performed individually.
 
+Reanalysis data (from NCEP) and gridded observations (from EOBS) have to be added into the "data" folder before running the scripts.
+
 Analogues were computed with the tool developped by lsce? (https://birdy.lsce.ipsl.fr:8443/)
 
 Please don't hesitate to contact one of the authors if you have any questions!
