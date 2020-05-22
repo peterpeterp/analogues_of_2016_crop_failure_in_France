@@ -8,8 +8,8 @@ Running the analysis requires an installation of R with the following libraries:
 
 ## Documentation
 
-Analogues were computed with the tool developped by lsce? (https://birdy.lsce.ipsl.fr:8443/)
-
 The analysis of December temperatures and April-July precipitation can be performed individually.
+
+Analogues were computed with the tool developped by lsce? (https://birdy.lsce.ipsl.fr:8443/)
 
 Please don't hesitate to contact one of the authors if you have any questions!
