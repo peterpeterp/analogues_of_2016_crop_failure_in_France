@@ -59,15 +59,17 @@ args[9] = jobid
 args[10] = alpha.TN
 args[11] = alpha.cal
 
-fname=paste(OUTdir,varname,"-m",mo.start,"d",day.start,"_cal",alpha.cal,"_temp_",alpha.TN,"-",jobid,".Rdat",sep="")
-
+fname=paste(varname,"-m",mo.start,"d",day.start,"_cal",alpha.cal,"_temp_",alpha.TN,"-",jobid,".Rdat",sep="")
+setwd(OUTdir)
 load(file=fname)
+setwd('../')
 
 ## ------------------------------------------------------------------------
 ## Compute the number of days between 0 and 10 degrees
 ## in December
 setwd(OUTdir)
 list.in = system("ls tx-m12d1_*-test.Rdat",intern=TRUE)
+setwd('../')
 
 ## Data input
 i=1
