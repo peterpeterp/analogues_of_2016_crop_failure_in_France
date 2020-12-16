@@ -2,7 +2,7 @@
 
 ## ------------------------------------------------------------------------
 ## Working directory (needs to be adapted)
-Tdir = "data/"
+Tdir = "Data/"
 OUTdir="sim_data/"
 plotDir="plots/"
 #setwd("/crop_failure/")
@@ -59,17 +59,34 @@ args[9] = jobid
 args[10] = alpha.TN
 args[11] = alpha.cal
 
-fname=paste(varname,"-m",mo.start,"d",day.start,"_cal",alpha.cal,"_temp_",alpha.TN,"-",jobid,".Rdat",sep="")
+## Read temperature  data for the region [45.5°N,51.5°N,-1.5°E,8°E] - EOBS dataset
+filin = paste(Tdir,varname,"_FR_mean.nc",sep="")
+nc = nc_open(filin)
+varnc=nc$var[[varname]]
+## Treatment of time
+nctime = nc$dim[['time']]
+time=nctime$vals
+conv.time=caldat(time+julday(1,1,1950))
+years=conv.time$year
+months=conv.time$month
+days=conv.time$day
+TN_day=ncvar_get(nc,varid=varnc)
+nc_close(nc)
+Date=10000*years+100*months+days
+TN=data.frame(Date,TN_day)
+
+
+fname=paste(varname,"-m",mo.start,"d",day.start,"_cal",alpha.cal,"_temp_",alpha.TN,"-",jobid,"_medium.Rdat",sep="")
 setwd(OUTdir)
 load(file=fname)
+years = simu.sta$ymin:simu.sta$ymax
 setwd('../')
 
 ## ------------------------------------------------------------------------
 ## Compute the number of days between 0 and 10 degrees
 ## in December
 setwd(OUTdir)
-list.in = system("ls tx-m12d1_*-test.Rdat",intern=TRUE)
-setwd('../')
+list.in = system("ls tx-m12d1_*-test_medium.Rdat",intern=TRUE)
 
 ## Data input
 i=1
@@ -108,6 +125,9 @@ for(i in unique(years)){
   sum_obs <- c(sum_obs,sum(data < 10 & data > 0))
 }
 
+setwd('../')
+
+
 ## ------------------------------------------------------------------------
 ## Fit of a Beta-binomial distribution to the number
 ## of days between 0 and 10 degrees  in December
@@ -139,8 +159,9 @@ Ndum=qbetabinom(l.probs,size=n,m,s)
 ## Figure A1 of Pfleiderer et al.
 
 setwd(plotDir)
-list.in = list.files(Tdir)
-list.in = paste0(Tdir,'/',list.in)
+setwd('../')
+list.in = list.files(OUTdir)
+list.in = paste0(OUTdir,'/',list.in)
 i=1
 l.alpha=c(0.4,0.6)
 Tobs=c()
@@ -180,9 +201,9 @@ plot(c(0,0.8),c(0,18),type="n",xlab="",ylab="December Temperature (?C)",xlim=(c(
 abline(h=Tobs[["2015"]],lty=3)
 boxplot(Tobs,add=TRUE,boxwex=0.2,at=0.2)
 for(i in 1:length(l.alpha)){
-  boxplot(Tsimdyn[[i]],at=l.alpha[i]-0.02,axes=FALSE,add=TRUE,
+  boxplot(Tsimdyn[[i]],at=l.alpha[i]-0.2,axes=FALSE,add=TRUE,
           col="red",boxwex=0.2)
-  boxplot(Tsimsta[[i]],at=l.alpha[i]+0.02,axes=FALSE,add=TRUE,
+  boxplot(Tsimsta[[i]],at=l.alpha[i]+0.2,axes=FALSE,add=TRUE,
           col="blue",boxwex=0.2)
 }
 labels_list=c('Observations','Z500','SLP')
